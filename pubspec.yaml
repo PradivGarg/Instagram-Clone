@@ -35,6 +35,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_svg: ^2.0.7
+  image_picker: ^0.8.9
   sparrow_image_picker: ^0.0.4
 
 dev_dependencies:
