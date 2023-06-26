@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "64962634608",
+    "project_id": "sociagram-13a74",
+    "storage_bucket": "sociagram-13a74.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:64962634608:android:6d81cd6220368e550625b5",
+        "android_client_info": {
+          "package_name": "com.animation_renimation.sociagram"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "64962634608-77d51dkqad3im2gghnc3m9fpdbnkr37p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3xUBTtPox-S-xaGxucM-xkOUhTQbAonE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "64962634608-77d51dkqad3im2gghnc3m9fpdbnkr37p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:64962634608:android:94d4654af7c59a2b0625b5",
+        "android_client_info": {
+          "package_name": "com.example.sociagram"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "64962634608-77d51dkqad3im2gghnc3m9fpdbnkr37p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3xUBTtPox-S-xaGxucM-xkOUhTQbAonE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "64962634608-77d51dkqad3im2gghnc3m9fpdbnkr37p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
