@@ -57,4 +57,22 @@ class AuthMethods {
   }
 
   //log in a user with their credentials and get back token for
+  // logging in user
+  Future<String> loginUser(
+      {required String email, required String password}) async {
+    String res = "Some error has occured";
+
+    try {
+      if (email.isNotEmpty || password.isNotEmpty) {
+        await _auth.signInWithEmailAndPassword(
+            email: email, password: password);
+        res = "success";
+      } else {
+        res = "please enter all the fields";
+      }
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
+  }
 }
