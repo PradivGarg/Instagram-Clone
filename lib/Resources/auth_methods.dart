@@ -43,6 +43,12 @@ class AuthMethods {
         // (if you want to use add method without uid)await _firestore.collection('users').add({});
         res = 'success';
       }
+    } on FirebaseAuthException catch (err) {
+      if (err.code == 'invalid-email') {
+        res = 'The email is badly formatted';
+      } else if (err.code == 'weak-password') {
+        res = 'you have entered a weak password';
+      }
     } catch (err) {
       res = err.toString();
     }
