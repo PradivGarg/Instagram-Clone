@@ -1,9 +1,12 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sociagram/Widgets/text_input_field.dart';
 import 'package:sociagram/utils/colors.dart';
 import 'package:sociagram/Resources/auth_methods.dart';
-
+import 'package:sociagram/utils/utils.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -17,6 +20,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _passwordContorller = TextEditingController();
   final TextEditingController _bioContorller = TextEditingController();
   final TextEditingController _usernameContorller = TextEditingController();
+  Uint8List? _image;
   @override
   void dispose() {
     // TODO: implement dispose
@@ -27,7 +31,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
     _usernameContorller.dispose();
   }
 
-  void SelectImage()
+  void SelectImage() async {
+    Uint8List im = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = im;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,11 +57,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   const SizedBox(height: 64),
                   //circular widget to accept to show our selected file
                   Stack(children: [
-                    const CircleAvatar(
-                      radius: 64,
-                      backgroundImage: NetworkImage(
-                          'https://images.unsplash.com/photo-1687488896809-6547211d9258?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=387&q=80'),
-                    ),
+                    _image != null
+                        ? CircleAvatar(
+                            radius: 64,
+                            backgroundImage: MemoryImage(_image!),
+                          )
+                        : const CircleAvatar(
+                            radius: 64,
+                            backgroundImage: NetworkImage(
+                                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR82DN9JU-hbIhhkPR-AX8KiYzA4fBMVwjLAG82fz7GLg&s'),
+                          ),
                     Positioned(
                         bottom: -10,
                         left: 80,
@@ -101,7 +115,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         password: _passwordContorller.text,
                         username: _usernameContorller.text,
                         bio: _bioContorller.text,
-                        file: 
                       );
                       print(res);
                     },
