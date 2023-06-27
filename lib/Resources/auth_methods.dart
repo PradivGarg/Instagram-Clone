@@ -47,7 +47,8 @@ class AuthMethods {
       if (err.code == 'invalid-email') {
         res = 'The email is badly formatted';
       } else if (err.code == 'weak-password') {
-        res = 'you have entered a weak password';
+        res =
+            'you have entered a weak password, please enter at least 6 characters';
       }
     } catch (err) {
       res = err.toString();

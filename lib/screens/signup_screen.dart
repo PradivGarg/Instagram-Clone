@@ -21,6 +21,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _bioContorller = TextEditingController();
   final TextEditingController _usernameContorller = TextEditingController();
   Uint8List? _image;
+  bool _isLoading = false;
   @override
   void dispose() {
     // TODO: implement dispose
@@ -36,6 +37,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
     setState(() {
       _image = im;
     });
+  }
+
+  void signUpUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String res = await AuthMethods().SignUpUser(
+        email: _emailController.text,
+        password: _passwordContorller.text,
+        username: _usernameContorller.text,
+        bio: _bioContorller.text,
+        file: _image!);
+    setState(() {
+      _isLoading = false;
+    });
+    if (res != 'success') {
+      showSnackBar(res, context);
+    }
   }
 
   @override
@@ -109,17 +128,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   const SizedBox(height: 24),
                   //button for sign-up
                   InkWell(
-                    onTap: () async {
-                      String res = await AuthMethods().SignUpUser(
-                          email: _emailController.text,
-                          password: _passwordContorller.text,
-                          username: _usernameContorller.text,
-                          bio: _bioContorller.text,
-                          file: _image!);
-                      print(res);
-                    },
+                    onTap: signUpUser,
                     child: Container(
-                      child: const Text('sign up'),
+                      child: _isLoading
+                          ? const Center(
+                              child: CircularProgressIndicator(
+                              color: primaryColor,
+                            ))
+                          : const Text('sign up'),
                       width: double.infinity,
                       alignment: Alignment.center,
                       padding: const EdgeInsets.symmetric(vertical: 12),
