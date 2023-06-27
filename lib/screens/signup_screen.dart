@@ -111,11 +111,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   InkWell(
                     onTap: () async {
                       String res = await AuthMethods().SignUpUser(
-                        email: _emailController.text,
-                        password: _passwordContorller.text,
-                        username: _usernameContorller.text,
-                        bio: _bioContorller.text,
-                      );
+                          email: _emailController.text,
+                          password: _passwordContorller.text,
+                          username: _usernameContorller.text,
+                          bio: _bioContorller.text,
+                          file: _image!);
                       print(res);
                     },
                     child: Container(
