@@ -70,6 +70,12 @@ class AuthMethods {
       } else {
         res = "please enter all the fields";
       }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print("No such user");
+      } else if (e.code == 'password-wrong') {
+        print("Wrong Password");
+      }
     } catch (err) {
       res = err.toString();
     }

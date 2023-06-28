@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:sociagram/responsive/responsive_layoutscreen.dart';
 import 'package:sociagram/screens/login_screen.dart';
 import 'package:sociagram/utils/colors.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:sociagram/responsive/webscreen_layout.dart';
+import 'package:sociagram/responsive/mobilescreen_layout.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,13 +32,34 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Sociagram',
-        theme: ThemeData.dark()
-            .copyWith(scaffoldBackgroundColor: mobileBackgroundColor),
-        // home: const ResponsiveLayout(
-        //   mobileScreenLayout: mobileScreenLayout(),
-        //   webScreenLayout: webscreenLayout(),
-        // ),
-        home: const LoginScreen());
+      title: 'Sociagram',
+      theme: ThemeData.dark()
+          .copyWith(scaffoldBackgroundColor: mobileBackgroundColor),
+      home: StreamBuilder(
+        //stream: FirebaseAuth.instance.idTokenChanges(),
+        //stream: FirebaseAuth.instance.userChanges(),
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.active) {
+            if (snapshot.hasData) {
+              return const ResponsiveLayout(
+                mobileScreenLayout: mobileScreenLayout(),
+                webScreenLayout: webscreenLayout(),
+              );
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Text('${snapshot.error}'),
+              );
+            }
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(color: primaryColor),
+            );
+          }
+          return const LoginScreen();
+        },
+      ),
+    );
   }
 }

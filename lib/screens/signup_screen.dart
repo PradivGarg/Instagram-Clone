@@ -1,12 +1,15 @@
 import 'dart:typed_data';
-
+import 'package:sociagram/responsive/responsive_layoutscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sociagram/Widgets/text_input_field.dart';
+import 'package:sociagram/screens/login_screen.dart';
 import 'package:sociagram/utils/colors.dart';
 import 'package:sociagram/Resources/auth_methods.dart';
 import 'package:sociagram/utils/utils.dart';
+import 'package:sociagram/responsive/webscreen_layout.dart';
+import 'package:sociagram/responsive/mobilescreen_layout.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -54,7 +57,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
     });
     if (res != 'success') {
       showSnackBar(res, context);
+    } else {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const ResponsiveLayout(
+            mobileScreenLayout: mobileScreenLayout(),
+            webScreenLayout: webscreenLayout(),
+          ),
+        ),
+      );
     }
+  }
+
+  void navigateToLogin() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const LoginScreen(),
+      ),
+    );
   }
 
   @override
@@ -160,7 +180,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: navigateToLogin,
                         child: Container(
                           child: const Text("login",
                               style: TextStyle(fontWeight: FontWeight.bold)),
