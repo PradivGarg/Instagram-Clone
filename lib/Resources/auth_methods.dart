@@ -8,6 +8,12 @@ import 'package:sociagram/models/user.dart' as model;
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  Future<model.User> getUserDetails() async {
+    User currentUser = _auth.currentUser!;
+    DocumentSnapshot docSnapShot =
+        await _firestore.collection('users').doc(currentUser.uid).get();
+    return model.User.fromSnap(docSnapShot);
+  }
 
   //sign-up the user
   Future<String> SignUpUser({

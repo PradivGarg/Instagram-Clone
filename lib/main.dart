@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sociagram/providers/user_provider.dart';
 import 'package:sociagram/responsive/responsive_layoutscreen.dart';
 import 'package:sociagram/screens/login_screen.dart';
 import 'package:sociagram/utils/colors.dart';
@@ -31,34 +33,37 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Sociagram',
-      theme: ThemeData.dark()
-          .copyWith(scaffoldBackgroundColor: mobileBackgroundColor),
-      home: StreamBuilder(
-        //stream: FirebaseAuth.instance.idTokenChanges(),
-        //stream: FirebaseAuth.instance.userChanges(),
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.active) {
-            if (snapshot.hasData) {
-              return const ResponsiveLayout(
-                mobileScreenLayout: mobileScreenLayout(),
-                webScreenLayout: webscreenLayout(),
-              );
-            } else if (snapshot.hasError) {
-              return Center(
-                child: Text('${snapshot.error}'),
+    return MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_) => userProvider())],
+      child: MaterialApp(
+        title: 'Sociagram',
+        theme: ThemeData.dark()
+            .copyWith(scaffoldBackgroundColor: mobileBackgroundColor),
+        home: StreamBuilder(
+          //stream: FirebaseAuth.instance.idTokenChanges(),
+          //stream: FirebaseAuth.instance.userChanges(),
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.active) {
+              if (snapshot.hasData) {
+                return const ResponsiveLayout(
+                  mobileScreenLayout: mobileScreenLayout(),
+                  webScreenLayout: webscreenLayout(),
+                );
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text('${snapshot.error}'),
+                );
+              }
+            }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(color: primaryColor),
               );
             }
-          }
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(color: primaryColor),
-            );
-          }
-          return const LoginScreen();
-        },
+            return const LoginScreen();
+          },
+        ),
       ),
     );
   }
