@@ -1,12 +1,9 @@
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sociagram/providers/user_provider.dart';
 import 'package:sociagram/utils/colors.dart';
 import 'package:image_picker/image_picker.dart';
-import '../models/user.dart';
-import '../providers/user_provider.dart';
 import '../utils/utils.dart';
 import 'package:sociagram/Resources/firestore_methods.dart';
 
@@ -117,7 +114,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
               backgroundColor: mobileBackgroundColor,
               leading: IconButton(
                 icon: const Icon(Icons.arrow_back),
-                onPressed: () {},
+                onPressed: clearImage,
               ),
               title: const Text('Post to'),
               centerTitle: false,
@@ -136,6 +133,10 @@ class _AddPostScreenState extends State<AddPostScreen> {
               ],
             ),
             body: Column(children: [
+              isLoading
+                  ? const LinearProgressIndicator()
+                  : const Padding(padding: EdgeInsets.only(top: 0.0)),
+              const Divider(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.start,
