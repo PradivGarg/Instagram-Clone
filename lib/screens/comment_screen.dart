@@ -20,7 +20,7 @@ class commentScreen extends StatefulWidget {
 class _commentScreenState extends State<commentScreen> {
   final TextEditingController commentEditingController =
       TextEditingController();
-  void postCOmment(String uid, String name, String profilePic) async {
+  void postComment(String uid, String name, String profilePic) async {
     try {
       String res = await FireStoreMethods().postComment(
           widget.postId, commentEditingController.text, uid, name, profilePic);
@@ -70,10 +70,43 @@ class _commentScreenState extends State<commentScreen> {
       //text input
       bottomNavigationBar: SafeArea(
         child: Container(
-          height: kToolbarHeight,
-          margin:
-              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-        ),
+            height: kToolbarHeight,
+            margin: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+            padding: const EdgeInsets.only(left: 16, right: 8),
+            child: Row(
+              children: [
+                CircleAvatar(
+                    backgroundImage: NetworkImage(user.photoURL), radius: 18),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 16, right: 8),
+                    child: TextField(
+                      controller: commentEditingController,
+                      decoration: InputDecoration(
+                        hintText: "comment as ${user.username}",
+                        border: InputBorder.none,
+                      ),
+                    ),
+                  ),
+                ),
+                InkWell(
+                  onTap: () => postComment(
+                    user.uid,
+                    user.username,
+                    user.photoURL,
+                  ),
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                    child: const Text(
+                      'Post',
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                  ),
+                ),
+              ],
+            )),
       ),
     );
   }
