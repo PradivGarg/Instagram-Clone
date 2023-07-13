@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sociagram/Widgets/like_animation.dart';
 import 'package:sociagram/models/user.dart' as model;
@@ -56,18 +57,18 @@ class _postCardState extends State<PostCard> {
     final width = MediaQuery.of(context).size.width;
 
     return Container(
-        //boundary needed for web
-        decoration: BoxDecoration(
-          border: Border.all(
-            color:
-                width > webScreenSize ? secondaryColor : mobileBackgroundColor,
-          ),
-          color: mobileBackgroundColor,
+      //boundary needed for web
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: width > webScreenSize ? secondaryColor : mobileBackgroundColor,
         ),
-        padding: const EdgeInsets.symmetric(
-          vertical: 10,
-        ),
-        child: Column(children: [
+        color: mobileBackgroundColor,
+      ),
+      padding: const EdgeInsets.symmetric(
+        vertical: 10,
+      ),
+      child: Column(
+        children: [
           //HEADER SECTION FOR THE POST
           Container(
             padding: const EdgeInsets.symmetric(
@@ -236,6 +237,75 @@ class _postCardState extends State<PostCard> {
             ],
           ),
           //DESCRIPTION AND NUMBER OF COMMENTS
-        ]));
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                DefaultTextStyle(
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleSmall!
+                        .copyWith(fontWeight: FontWeight.w800),
+                    child: Text(
+                      '${widget.snap['likes'].length} likes',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    )),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.only(
+                    top: 8,
+                  ),
+                  child: RichText(
+                    text: TextSpan(
+                      style: const TextStyle(color: primaryColor),
+                      children: [
+                        TextSpan(
+                          text: widget.snap['username'].toString(),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextSpan(
+                          text: ' ${widget.snap['description']}',
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                InkWell(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: Text(
+                      'View all $commentLen comments',
+                      style:
+                          const TextStyle(fontSize: 16, color: secondaryColor),
+                    ),
+                  ),
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => commentScreen(
+                        postId: widget.snap['postId'].toString(),
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: Text(
+                    DateFormat.yMMMd()
+                        .format(widget.snap['datePublished'].toDate()),
+                    style: const TextStyle(
+                      color: secondaryColor,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
